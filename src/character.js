@@ -55,7 +55,6 @@ export function fight(player, npc, battleType) {
   } else {
     npc.leveler(1);
     player.leveler(1);
-    return false;
   }
 }
 

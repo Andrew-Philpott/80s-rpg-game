@@ -1,4 +1,4 @@
-export class RPG {
+export class Character {
   constructor(name, gender) {
     this.name = name;
     this.gender = gender;

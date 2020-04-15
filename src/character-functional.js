@@ -33,17 +33,17 @@ const changeStateString = (prop) => {
 const JeffNerd = changeStateString("name")("jeff");
 const MaleNerd = changeStateString("gender")("male");
 
-const changeState = (prop) => {
-  return (value) => {
-    return (name) => {
-      return (state) => ({
-        name,
-        ...state,
-        [prop]: (state[prop] || 0) + value,
-      });
-    };
-  };
-};
+// const changeState = (prop) => {
+//   return (value) => {
+//     return (name) => {
+//       return (state) => ({
+//         name,
+//         ...state,
+//         [prop]: (state[prop] || 0) + value,
+//       });
+//     };
+//   };
+// };
 
 //const name = changeState("name")(value of input)
 

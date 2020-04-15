@@ -1,8 +1,8 @@
-import {Character, Nerd, Prep, Jock, fight} from '../src/character.js';
-import {Situation, Game} from '../src/situation.js'
+import { Character, Nerd, Prep, Jock, fight } from "../src/character.js";
+import { Situation, Game } from "../src/situation.js";
 
 describe("Character", () => {
-  test('Should correctly create character object', () => {
+  test("Should correctly create character object", () => {
     let steven = new Character("Steven", "Boy");
     expect(steven.name).toEqual("Steven");
     expect(steven.gender).toEqual("Boy");
@@ -10,31 +10,33 @@ describe("Character", () => {
     expect(steven.brains).toEqual(undefined);
     expect(steven.sporty).toEqual(undefined);
     expect(steven.cool).toEqual(undefined);
-  })
+  });
 
-  test('Should correctly return the start string', () => {
+  test("Should correctly return the start string", () => {
     let steven = new Character("Steven", "Boy");
-    expect(steven.openingString()).toEqual("You begin your journey through the harsh landscape of 80s pop culture. You're a Boy. You've also chosen to call yourself Steven.");
-  })
+    expect(steven.openingString()).toEqual(
+      "You begin your journey through the harsh landscape of 80s pop culture. You're a Boy. You've also chosen to call yourself Steven."
+    );
+  });
 
-  test('the assignStat function should correctly assign the passed-in value to the passed-in stat', function() {
+  test("the assignStat function should correctly assign the passed-in value to the passed-in stat", function () {
     let steven = new Character("Steven", "Boy");
     steven.assignStat("sporty", 100);
     expect(steven.sporty).toEqual(100);
-  })
+  });
 
-  test('the assignStats function should correctly assign the passed-in values to each stat', function() {
+  test("the assignStats function should correctly assign the passed-in values to each stat", function () {
     let steven = new Character("Steven", "Boy");
     steven.assignStats(50, 100, 200, 300);
     expect(steven.vitality).toEqual(50);
     expect(steven.sporty).toEqual(200);
     expect(steven.brains).toEqual(100);
     expect(steven.cool).toEqual(300);
-  })
-})
+  });
+});
 
 describe("Nerd", () => {
-  test('Should correctly create Nerd object', () => {
+  test("Should correctly create Nerd object", () => {
     let steven = new Nerd("Steven", "Boy");
     expect(steven.name).toEqual("Steven");
     expect(steven.gender).toEqual("Boy");
@@ -45,16 +47,17 @@ describe("Nerd", () => {
     expect(steven.baseBrains).toEqual(100);
     expect(steven.baseSporty).toEqual(50);
     expect(steven.baseCool).toEqual(50);
-  })
-  test('Should correctly return the start string', () => {
+  });
+  test("Should correctly return the start string", () => {
     let steven = new Nerd("Steven", "Boy");
-    expect(steven.openingString()).toEqual("You begin your journey through the harsh landscape of 80s pop culture. You're a Boy. You've also chosen to call yourself Steven.");
-  })
-
-})
+    expect(steven.openingString()).toEqual(
+      "You begin your journey through the harsh landscape of 80s pop culture. You're a Boy. You've also chosen to call yourself Steven."
+    );
+  });
+});
 
 describe("Prep", () => {
-  test('Should correctly create Prep object', () => {
+  test("Should correctly create Prep object", () => {
     let krista = new Prep("Krista", "girl");
     expect(krista.name).toEqual("Krista");
     expect(krista.gender).toEqual("girl");
@@ -65,11 +68,11 @@ describe("Prep", () => {
     expect(krista.baseBrains).toEqual(50);
     expect(krista.baseSporty).toEqual(50);
     expect(krista.baseCool).toEqual(100);
-  })
-})
+  });
+});
 
 describe("Jock", () => {
-  test('Should correctly create Jock object', () => {
+  test("Should correctly create Jock object", () => {
     let npc = new Jock("Chad", "boy");
     expect(npc.name).toEqual("Chad");
     expect(npc.gender).toEqual("boy");
@@ -80,11 +83,11 @@ describe("Jock", () => {
     expect(npc.baseBrains).toEqual(50);
     expect(npc.baseSporty).toEqual(100);
     expect(npc.baseCool).toEqual(50);
-  })
-})
+  });
+});
 
-describe ("fight()", () => {
-  test ('should return winner of the fight and increase/decrease level accordingly', () => {
+describe("fight()", () => {
+  test("should return winner of the fight and increase/decrease level accordingly", () => {
     let npc = new Jock("Chad", "Boy");
     let steven = new Nerd("Steven", "Boy");
     expect(fight(steven, npc, "fistFight")).toEqual(npc);
@@ -92,36 +95,59 @@ describe ("fight()", () => {
     expect(steven.vitality).toEqual(9);
     expect(npc.sporty).toEqual(120);
     expect(steven.sporty).toEqual(45);
-  })
+  });
 
-  test('should return false if there is a tie, but each player level should increase by 1', () => {
+  test("should return false if there is a tie, but each player level should increase by 1", () => {
     let npc = new Nerd("Arnold", "Boy");
     let steven = new Nerd("Steven", "Boy");
     expect(fight(steven, npc, "fistFight")).toEqual(false);
     expect(npc.vitality).toEqual(11);
     expect(steven.vitality).toEqual(11);
-  })
+  });
+});
 
-})
-
-describe ("Situation", () => {
+describe("Situation", () => {
   test("should correctly construct a new situation", () => {
-    let lunch = new Situation("The Lunch Lady", "woman", "in the cafeteria", 75, 110, 50);
+    let lunch = new Situation(
+      "The Lunch Lady",
+      "woman",
+      "in the cafeteria",
+      75,
+      110,
+      50
+    );
     expect(lunch.setting).toEqual("in the cafeteria");
     expect(lunch.monster.name).toEqual("The Lunch Lady");
     expect(lunch.monster.brains).toEqual(75);
-  })
+  });
   test("should correctly return a summary of the situation", () => {
-    let lunch = new Situation("The Lunch Lady", "woman", "in the cafeteria", 75, 110, 50);
-    expect(lunch.getSituationSummary()).toEqual(`You spot The Lunch Lady in the cafeteria.`);
-  })
-})
+    let lunch = new Situation(
+      "The Lunch Lady",
+      "woman",
+      "in the cafeteria",
+      75,
+      110,
+      50
+    );
+    expect(lunch.getSituationSummary()).toEqual(
+      `You spot The Lunch Lady in the cafeteria.`
+    );
+  });
+});
 
-describe ( "Game", () => {
+describe("Game", () => {
   test("should return the designated situation", () => {
     let steven = new Nerd("Steven", "Boy");
-    let stevenGame = new Game(steven)
-    expect(stevenGame.getRandomSituation(6,6)).toEqual(stevenGame.situations[6]);
-    expect(stevenGame.getRandomSituation(6,6).monster.name).toEqual("Gym Teacher");
-  })
-})
+    let stevenGame = new Game(steven);
+    expect(stevenGame.getRandomSituation(6, 6)).toEqual(
+      stevenGame.situations[6]
+    );
+    expect(stevenGame.getRandomSituation(6, 6).monster.name).toEqual(
+      "Gym Teacher"
+    );
+  });
+});
+
+describe("Player", () => {
+  test("should return a player with the name ", () => {});
+});

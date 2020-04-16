@@ -6,7 +6,7 @@ import { changeState } from "../src/character-functional.js";
 import { storeStateInitialState } from "../src/character-functional.js";
 import { battle } from "../src/character-functional.js";
 import { battleCurriedFunction } from "../src/character-functional.js";
-
+import { battleCurriedFunctionForLoser } from "../src/character-functional.js";
 // Functional Programming Version
 // brainLeveler is increasing the value of the brains property for the given Charecter
 
@@ -17,7 +17,9 @@ describe("Game", () => {
   const vitalityLeveler = changeState("vitality")(50);
   const brainDecrease = changeState("brains")(-20);
   const checkInitialState = changeState("vitality")(0);
-
+  const leveler = changeState("level")(1);
+  const beaten = changeState("vitality")(-50);
+  const life = changeState("life")(false);
   const superAwesomeness = [
     brainLeveler,
     sportLeveler,
@@ -42,6 +44,8 @@ describe("Game", () => {
     sporty: 50,
     cool: 50,
     vitality: 100,
+    level: 0,
+    life: true,
   };
 
   const jock = {
@@ -51,7 +55,11 @@ describe("Game", () => {
     sporty: 100,
     cool: 100,
     vitality: 100,
+    level: 0,
+    life: true,
   };
+
+  //Say you win with the jock and you get the choice of choosing to "gamble" on the next battle type. The gamble is that you have a 50/50 chance of having the next battle match up with the character you last used for the battle
 
   const prep = {
     name: "Perky perby",
@@ -59,6 +67,9 @@ describe("Game", () => {
     brains: 50,
     sporty: 50,
     cool: 100,
+    vitality: 100,
+    level: 0,
+    life: true,
   };
 
   // const initialState = () => {
@@ -72,12 +83,20 @@ describe("Game", () => {
     sporty: 0,
     cool: 0,
     vitality: 0,
+    level: 0,
   };
 
-  const JockVsPrep = battleCurriedFunction(jock)(prep);
   let jockCharecterUpdater;
-  let nerdCharacterUpdater;
   let prepCharacterUpdater;
+  let nerdCharacterUpdater;
+
+  const JockVsPrep = battleCurriedFunction(jock)(prep);
+
+  const JockVsNerd = battleCurriedFunction(jock)(nerd);
+
+  const PrepVsNerd = battleCurriedFunction(prep)(nerd);
+
+  const JockWinsPrepLoses = battleCurriedFunctionForLoser(jock)(prep);
 
   beforeEach(() => {
     jockCharecterUpdater = storeState(jock);
@@ -110,10 +129,26 @@ describe("Game", () => {
   });
 
   test("tests the battle mechanic", () => {
-    let nerd = nerdCharacterUpdater(brainLeveler);
-    let jock = jockCharecterUpdater(brainLeveler);
-    let outcome = battle(jock, nerd, "cool");
-    expect(outcome).toEqual(jock);
+    //We pass in characters to figure out the winner. Doesn't mutate state
+    let winner = battleCurriedFunction(jock)(nerd)("cool");
+    expect(winner).toEqual(jock);
+    //This doesn't mutate original
+    let characterUpdater = storeState(winner);
+    winner = characterUpdater(leveler);
+
+    expect(winner.level).toEqual(1);
+  });
+
+  test("tests the battle mechanic", () => {
+    let winner = JockVsPrep("sporty");
+    let outcome = leveler(winner);
+    expect(outcome.level).toEqual(1);
+  });
+
+  test("tests the battle mechanic", () => {
+    let loser = JockWinsPrepLoses("sporty");
+    let outcome = beaten(loser);
+    expect(outcome.vitality).toEqual(50);
   });
 
   test("tests the battle mechanic", () => {
@@ -121,12 +156,14 @@ describe("Game", () => {
     expect(outcome).toEqual(jock);
   });
 
-  test("Tests recursion for brain leveler", () => {
-    let outcome = JockVsPrep("sporty");
-    expect(outcome).toEqual(jock);
+  test("Tests the battle between nerd and jock with battleCurriedFunction", () => {
+    let outcome = JockVsNerd("brains");
+
+    expect(outcome).toEqual(nerd);
+
+    /// this is jock vs prep not nerd
   });
 });
-
 // test("should return the player with the higher property value", () => {
 //   let JockVPrep = battle(prep, jock, sporty);
 // });
@@ -148,17 +185,3 @@ describe("Game", () => {
 //     expect(newState.brains).toEqual(300);
 //   });
 // });
-
-// describe("Player", () => {
-//   test("should return a player with the name ", () => {
-//     const stateChanger = storeState({
-//       name: "",
-//       brains: 0,
-//       sporty: 0,
-//       cool: 0,
-//       vitality: 0,
-//     });
-//     const newState = changeState("sporty")(100);
-//     expect(newState.brains).toEqual(100);
-//   });
-// })

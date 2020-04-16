@@ -77,21 +77,20 @@ export const changeState = (prop) => {
   };
 };
 
-// const changePlantState = (plant, property, value) => {
-//   return {
-//     ...plant,
-//     [property]: (plant[property] || 0) + value,
-//   };
+const leveler = changeState("level")(1);
+const life = changeState("life")(false);
+
+// export const battle = (character1, character2, property) => {
+//   if (character1[property] > character2[property]) {
+//     //character1(leverler);
+//     return character1;
+//   } else if (character1[property] > character2[property]) {
+//     //character2(leveler);
+//     return character2;
+//   } else return character1, character2;
 // };
 
-export const battle = (character1, character2, property) => {
-  if (character1[property] > character2[property]) {
-    return character1;
-  } else if (character1[property] > character2[property]) {
-    return character2;
-  } else return "Tie";
-};
-
+//winner
 export const battleCurriedFunction = (character1) => {
   return (character2) => {
     return (property) => {
@@ -99,10 +98,31 @@ export const battleCurriedFunction = (character1) => {
         return character1;
       } else if (character1[property] > character2[property]) {
         return character2;
-      } else return "Tie";
+      } else return character1, character2;
     };
   };
 };
+
+//loser
+export const battleCurriedFunctionForLoser = (character1) => {
+  return (character2) => {
+    return (property) => {
+      if (character1[property] > character2[property]) {
+        return character2;
+      } else if (character1[property] > character2[property]) {
+        return character1;
+      } else return character1, character2;
+    };
+  };
+};
+
+// export const Leveler = (character) => {
+//   return (property) => {
+//     return (levelIncrease) => {
+
+//     }
+//   }
+// }
 
 export const changeStateString = (prop) => {
   return (string) => {
@@ -120,6 +140,8 @@ const nerdInitialState = {
   sporty: 50,
   cool: 50,
   vitality: 100,
+  level: 0,
+  life: true,
 };
 
 const nerd = storeState(nerdInitialState);
@@ -131,6 +153,8 @@ const jockInitialState = {
   sporty: 100,
   cool: 100,
   vitality: 100,
+  level: 0,
+  life: true,
 };
 
 const jock = storeState(jockInitialState);
@@ -141,6 +165,9 @@ const prepInitalState = {
   brains: 50,
   sporty: 50,
   cool: 100,
+  vitality: 100,
+  level: 0,
+  life: true,
 };
 
 const prep = storeState(prepInitalState);

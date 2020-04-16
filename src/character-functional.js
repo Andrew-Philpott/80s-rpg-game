@@ -1,69 +1,10 @@
-// const initialState = {
-//   name: {},
-//   gender: {},
-//   vitality: {},
-//   brains: {},
-//   sporty: {},
-// };
-
-// const hydrate = (plant) => {
-//   return {
-//     ...plant,
-//     water: (plant.water || 0) + 1,
-//   };
-// };
-
-// export const storeStateInitialState = (initialState) => {
-//   let currentState = initialState;
-//   return (stateChangeFunction) => {
-//     const newState = stateChangeFunction(currentState);
-//     currentState = { ...newState };
-//     return newState;
-//   };
-// };
-
-// export const storeState = () => {
-//   let currentState = {};
-//   return (stateChangeFunction) => {
-//     const newState = stateChangeFunction(currentState);
-//     currentState = { ...newState };
-//     return newState;
-//   };
-// };
-
-// export const changeStateString = (prop) => {
-//   return (string) => {
-//     return (state) => ({
-//       ...state,
-//       [prop]: string,
-//     });
-//   };
-// };
-
-// export const changeState = (prop) => {
-//   return (value) => {
-//     return (state) => ({
-//       ...state,
-//       [prop]: (state[prop] || 0) + value,
-//     });
-//   };
-// };
-
-// const initialState = {
-//   name: "",
-//   gender: "",
-//   brains: 0,
-//   sporty: 0,
-//   cool: 0,
-//   vitality: 0,
-// };
-
-export const storeState = (initialState) => {
-  // currentState is always in scope because of its closure
-  let currentState = initialState;
+export const storeState = (nerd) => {
+  let currentState = nerd;
   return (stateChangeFunction) => {
     const newState = stateChangeFunction(currentState);
+
     currentState = { ...newState };
+
     return newState;
   };
 };
@@ -77,52 +18,35 @@ export const changeState = (prop) => {
   };
 };
 
+const brainLeveler = changeState("brains")(50);
+const sportLeveler = changeState("sporty")(50);
+const coolLeveler = changeState("cool")(50);
+const vitalityLeveler = changeState("vitality")(50);
+const brainDecrease = changeState("brains")(-20);
+const checkInitialState = changeState("vitality")(0);
 const leveler = changeState("level")(1);
+const beaten = changeState("vitality")(-50);
 const life = changeState("life")(false);
 
-// export const battle = (character1, character2, property) => {
-//   if (character1[property] > character2[property]) {
-//     //character1(leverler);
-//     return character1;
-//   } else if (character1[property] > character2[property]) {
-//     //character2(leveler);
-//     return character2;
-//   } else return character1, character2;
-// };
-
-//winner
-export const battleCurriedFunction = (character1) => {
+export const battle = (character1) => {
   return (character2) => {
     return (property) => {
       if (character1[property] > character2[property]) {
-        return character1;
-      } else if (character1[property] > character2[property]) {
-        return character2;
-      } else return character1, character2;
+        return [character1, character2];
+      } else if (character1[property] < character2[property]) {
+        return [character2, character1];
+      } else return [{}, {}];
     };
   };
 };
 
-//loser
-export const battleCurriedFunctionForLoser = (character1) => {
-  return (character2) => {
-    return (property) => {
-      if (character1[property] > character2[property]) {
-        return character2;
-      } else if (character1[property] > character2[property]) {
-        return character1;
-      } else return character1, character2;
-    };
+const LifeChecks = (object) => {
+  return (vitality) => {
+    if (character.vitality == 0) {
+      return character.life === false;
+    }
   };
 };
-
-// export const Leveler = (character) => {
-//   return (property) => {
-//     return (levelIncrease) => {
-
-//     }
-//   }
-// }
 
 export const changeStateString = (prop) => {
   return (string) => {
